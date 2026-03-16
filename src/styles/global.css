@@ -115,12 +115,13 @@ ul {
 .post-list {
   list-style: none;
   padding: 0;
+  display: grid;
+  gap: 1rem;
 }
 
 .text-list li,
 .post-list li {
-  border-top: 1px solid var(--line);
-  padding: 0.8rem 0;
+  padding: 0.2rem 0;
 }
 
 .text-list li {
