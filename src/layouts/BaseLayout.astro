@@ -8,6 +8,7 @@ interface Props {
 
 const { title } = Astro.props;
 const pathname = stripBase(Astro.url.pathname);
+const baseUrl = import.meta.env.BASE_URL || '/';
 
 const nav = [
   { href: '', match: '/', label: 'Home' },
@@ -48,11 +49,38 @@ const isActive = (match: string) =>
       </main>
     </div>
 
-    <script is:inline>
+    <script is:inline define:vars={{ baseUrl }}>
+      const normalizeBase = (base) => {
+        if (!base) return '/';
+        return base.endsWith('/') ? base : `${base}/`;
+      };
+
+      const siteBase = normalizeBase(baseUrl);
       const origin = window.location.origin;
+
+      const addBase = (urlPath) => {
+        if (!urlPath.startsWith('/')) return urlPath;
+        if (urlPath.startsWith('//')) return urlPath;
+        if (siteBase !== '/' && urlPath.startsWith(siteBase)) return urlPath;
+        const tail = urlPath.replace(/^\/+/, '');
+        return `${siteBase}${tail}`;
+      };
+
+      document.querySelectorAll('a[href^="/"]').forEach((a) => {
+        const href = a.getAttribute('href');
+        if (!href || href.startsWith('//')) return;
+        a.setAttribute('href', addBase(href));
+      });
+
+      document.querySelectorAll('img[src^="/"]').forEach((img) => {
+        const src = img.getAttribute('src');
+        if (!src || src.startsWith('//')) return;
+        img.setAttribute('src', addBase(src));
+      });
+
       document.querySelectorAll('a[href]').forEach((a) => {
         const href = a.getAttribute('href');
-        if (!href || href.startsWith('#') || href.startsWith('/') || href.startsWith('mailto:') || href.startsWith('tel:')) {
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) {
           return;
         }
 
