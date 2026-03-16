@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../lib/base';
 import { getSitePosts } from '../../lib/posts';
 
 const posts = await getSitePosts();
@@ -13,7 +14,7 @@ const posts = await getSitePosts();
         posts.map((post) => (
           <li>
             <div class="post-line">
-              <a href={`/writing/${post.slug}`} class="post-title">
+              <a href={withBase(`/writing/${post.slug}`)} class="post-title">
                 {post.title}
               </a>
               <div class="post-meta-row">

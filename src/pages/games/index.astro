@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../lib/base';
 
 const games = await getCollection('games');
 const sorted = games.sort((a, b) => {
@@ -18,7 +19,7 @@ const sorted = games.sort((a, b) => {
       {
         sorted.map((game) => (
           <a href={game.data.href} class="game-card" aria-label={game.data.title}>
-            <img src={game.data.cover} alt={game.data.title} loading="lazy" />
+            <img src={withBase(game.data.cover)} alt={game.data.title} loading="lazy" />
             <div>
               <h2>{game.data.title}</h2>
               <p>{game.data.summary}</p>

@@ -1,21 +1,22 @@
 ---
 import '../styles/global.css';
+import { stripBase, withBase } from '../lib/base';
 
 interface Props {
   title: string;
 }
 
 const { title } = Astro.props;
-const pathname = Astro.url.pathname;
+const pathname = stripBase(Astro.url.pathname);
 
 const nav = [
-  { href: '/', label: 'Home' },
-  { href: '/writing', label: 'Writing' },
-  { href: '/games', label: 'Games' }
+  { href: '', match: '/', label: 'Home' },
+  { href: 'writing', match: '/writing', label: 'Writing' },
+  { href: 'games', match: '/games', label: 'Games' }
 ];
 
-const isActive = (href: string) =>
-  href === '/' ? pathname === '/' : pathname.startsWith(href);
+const isActive = (match: string) =>
+  match === '/' ? pathname === '/' : pathname.startsWith(match);
 ---
 
 <html lang="en">
@@ -27,13 +28,13 @@ const isActive = (href: string) =>
   <body>
     <div class="page-shell">
       <header class="site-header">
-        <a class="site-title" href="/">papergrid</a>
+        <a class="site-title" href={withBase('/')}>papergrid</a>
         <nav aria-label="Primary" class="top-nav">
           {
             nav.map((item) => (
               <a
-                href={item.href}
-                class:list={{ active: isActive(item.href) }}
+                href={withBase(item.href)}
+                class:list={{ active: isActive(item.match) }}
               >
                 {item.label}
               </a>

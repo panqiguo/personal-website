@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { withBase } from '../lib/base';
 import { getSitePosts } from '../lib/posts';
 
 const posts = await getSitePosts();
@@ -22,13 +23,13 @@ const featuredGames = games
   <section class="section-block">
     <div class="section-head">
       <h2>Latest Writing</h2>
-      <a href="/writing">View all</a>
+      <a href={withBase('/writing')}>View all</a>
     </div>
     <ul class="text-list">
       {
         posts.slice(0, 3).map((post) => (
           <li>
-            <a href={`/writing/${post.slug}`}>{post.title}</a>
+            <a href={withBase(`/writing/${post.slug}`)}>{post.title}</a>
             <time datetime={post.date.toISOString()}>
               {post.date.toLocaleDateString('en-CA')}
             </time>
@@ -41,13 +42,13 @@ const featuredGames = games
   <section class="section-block">
     <div class="section-head">
       <h2>Featured Games</h2>
-      <a href="/games">View all</a>
+      <a href={withBase('/games')}>View all</a>
     </div>
     <div class="games-grid compact">
       {
         featuredGames.map((game) => (
           <a href={game.data.href} class="game-card" aria-label={game.data.title}>
-            <img src={game.data.cover} alt={game.data.title} loading="lazy" />
+            <img src={withBase(game.data.cover)} alt={game.data.title} loading="lazy" />
             <span>{game.data.title}</span>
           </a>
         ))
