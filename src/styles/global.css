@@ -311,6 +311,10 @@ ul {
   margin-bottom: 0.5rem;
 }
 
+.article-back {
+  margin-top: 1.4rem;
+}
+
 a.external-link::after {
   content: "↗\FE0E";
   font-size: 0.8em;

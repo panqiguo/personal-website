@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../lib/base';
 import { formatDate } from '../../lib/date';
 import { getSitePosts } from '../../lib/posts';
 
@@ -27,5 +28,8 @@ const { Content } = await post.entry.render();
       <p class="article-summary">{post.summary}</p>
     </header>
     <Content />
+    <p class="article-back">
+      <a href={withBase('/writing')}>Back to Writing</a>
+    </p>
   </article>
 </BaseLayout>
