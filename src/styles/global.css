@@ -140,6 +140,15 @@ ul {
   font-size: 0.95rem;
 }
 
+.latest-link {
+  display: inline-block;
+  padding: 0.02rem 0.34rem;
+  border-radius: 0.22rem;
+  background: #ece8de;
+  box-shadow: 0 1px 0 #e0d9cc;
+  text-decoration: none;
+}
+
 .post-title {
   display: inline-block;
   font-size: 1rem;
@@ -182,6 +191,9 @@ ul {
   color: inherit;
   border: 1px solid var(--line);
   display: block;
+  border-radius: 0.22rem;
+  overflow: hidden;
+  /* padding: 0.66rem; */
 }
 
 .game-card img {
