@@ -19,7 +19,7 @@ const { Content } = await post.entry.render();
 <BaseLayout title={post.title}>
   <article class="article">
     <header>
-      <h2>{post.title}</h2>
+      <h1>{post.title}</h1>
       <p class="muted">
         <time datetime={post.date.toISOString()}>
           {formatDate(post.date)}
@@ -34,6 +34,6 @@ const { Content } = await post.entry.render();
 
     <div class="space"></div>
 
-    <a href={withBase('/writing')}>Back to Writing</a>
+    <a href={withBase('/writing')} class="article-index-link">Back to Writing</a>
   </article>
 </BaseLayout>

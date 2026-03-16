@@ -38,6 +38,11 @@ main a {
   text-decoration-color: #898989;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.3em;
+  transition: text-decoration-color 120ms ease;
+}
+
+main a:hover {
+  text-decoration-color: #767676;
 }
 
 .page-shell {
@@ -254,10 +259,10 @@ ul {
 }
 
 .article h1 {
-  font-size: clamp(1.75rem, 2.6vw, 2.2rem);
+  font-size: 1.25rem;
   font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 650;
-  line-height: 1.18;
+  line-height: 1.25;
   margin-bottom: 0.35rem;
 }
 
@@ -275,9 +280,14 @@ ul {
   border: 1px solid var(--line);
 }
 
+.article p:has(> img:only-child) {
+  margin-top: var(--space-1);
+  margin-bottom: var(--space-1);
+}
+
 .article p {
-  font-size: clamp(1.03rem, 1.25vw, 1.15rem);
-  line-height: 1.56;
+  font-size: clamp(1rem, 1.18vw, 1.1rem);
+  line-height: 1.63;
   letter-spacing: 0.002em;
 }
 
@@ -285,6 +295,14 @@ ul {
 .article h3 {
   margin-top: var(--space-2);
   font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.article h2 {
+  font-size: 1.12rem;
+}
+
+.article h3 {
+  font-size: 1rem;
 }
 
 .article blockquote {
@@ -354,6 +372,16 @@ ul {
   content: "";
 }
 
+.article-index-link {
+  color: var(--muted);
+  font-size: 0.92rem;
+  text-decoration-color: #a9a29a;
+}
+
+.article-index-link:hover {
+  text-decoration-color: #8f877e;
+}
+
 a.external-link::after {
   content: "\00A0↗\FE0E";
   font-size: 0.8em;
@@ -390,8 +418,8 @@ a.external-link::after {
   }
 
   .article p {
-    font-size: 0.98rem;
-    line-height: 1.62;
+    font-size: 0.96rem;
+    line-height: 1.66;
   }
 }
 
