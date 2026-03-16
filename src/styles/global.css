@@ -6,6 +6,10 @@
   --accent: #3f372d;
   --layout-width: 500px;
   --layout-gutter: 2.5rem;
+  --space-1: 0.9rem;
+  --space-2: 1.3rem;
+  --space-3: 1.6rem;
+  --space-4: 3.3rem;
 }
 
 * {
@@ -104,13 +108,8 @@ ul {
   margin-top: 1.2rem;
 }
 
-.intro-block {
-  font-size: 1.08rem;
-  margin: 0.25rem 0 0.9rem;
-}
-
-.home-latest-text {
-  margin-top: 3.3rem;
+.space {
+  height: 1.6rem;
 }
 
 .muted {
@@ -245,14 +244,14 @@ ul {
 .article header {
   text-align: left;
   padding-bottom: 0;
-  margin-bottom: 3.3rem;
+  margin-bottom: var(--space-4);
 }
 
 .article > * {
   max-width: 100%;
   margin-left: 0;
   margin-right: 0;
-  margin-bottom: 0.9rem;
+  margin-bottom: var(--space-1);
 }
 
 .article h1 {
@@ -285,7 +284,7 @@ ul {
 
 .article h2,
 .article h3 {
-  margin-top: 1.3rem;
+  margin-top: var(--space-2);
   font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -321,7 +320,7 @@ ul {
 }
 
 .article section[data-footnotes] {
-  margin-top: 3.3rem;
+  margin-top: var(--space-4);
   padding-top: 0;
 }
 
@@ -330,7 +329,7 @@ ul {
 }
 
 .article section[data-footnotes] li {
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-1);
 }
 
 .article section[data-footnotes] > h2 {
@@ -338,7 +337,26 @@ ul {
 }
 
 .article-back {
-  margin-top: 1.4rem;
+  margin-top: var(--space-3);
+}
+
+.article a[data-footnote-backref] {
+  margin-left: 0.35rem;
+  font-size: 0;
+  line-height: inherit;
+  text-decoration-line: underline;
+  text-decoration-color: #898989;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+}
+
+.article a[data-footnote-backref]::before {
+  content: "↩\FE0E";
+  font-size: 0.92rem;
+}
+
+.article a[data-footnote-backref]::after {
+  content: "";
 }
 
 a.external-link::after {

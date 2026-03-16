@@ -96,10 +96,6 @@ const isActive = (match: string) =>
         }
       });
 
-      // Force text presentation for footnote backrefs on iOS.
-      document.querySelectorAll('a[data-footnote-backref]').forEach((a) => {
-        a.textContent = '\u21A9\uFE0E';
-      });
     </script>
   </body>
 </html>
