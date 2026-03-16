@@ -199,6 +199,10 @@ ul {
 .game-card h2 {
   font-size: 0.95rem;
   padding-bottom: 0.08rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.4rem;
 }
 
 .game-card p {
@@ -305,10 +309,24 @@ ul {
 }
 
 a.external-link::after {
-  content: "↗";
+  content: "↗\FE0E";
   font-size: 0.8em;
   margin-left: 0.28em;
   vertical-align: 0.08em;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.game-card.external-link::after {
+  content: none;
+}
+
+.game-card.external-link h2::after {
+  content: "↗\FE0E";
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.82em;
+  line-height: 1;
+  flex: 0 0 auto;
+  margin-top: 0.12em;
 }
 
 @media (max-width: 700px) {
