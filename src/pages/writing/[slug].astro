@@ -27,9 +27,13 @@ const { Content } = await post.entry.render();
       </p>
       <p class="article-summary">{post.summary}</p>
     </header>
+
+    <div class="space"></div>
+
     <Content />
-    <p class="article-back">
-      <a href={withBase('/writing')}>Back to Writing</a>
-    </p>
+
+    <div class="space"></div>
+
+    <a href={withBase('/writing')}>Back to Writing</a>
   </article>
 </BaseLayout>
