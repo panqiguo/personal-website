@@ -332,7 +332,7 @@ a.external-link::after {
   }
 }
 
-@media (max-width: 460px) {
+@media (max-width: 370px) {
   .post-line,
   .text-list li {
     flex-direction: column;
