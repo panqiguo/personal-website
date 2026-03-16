@@ -2,14 +2,29 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { withBase } from '../lib/base';
+import { formatDate } from '../lib/date';
 import { getSitePosts } from '../lib/posts';
 
 const posts = await getSitePosts();
 const games = await getCollection('games');
-
-const featuredGames = games
-  .filter((game) => game.data.featured)
-  .slice(0, 4);
+const latest = [
+  ...posts.map((post) => ({
+    title: post.title,
+    date: post.date,
+    kind: 'Writing',
+    href: withBase(`/writing/${post.slug}`)
+  })),
+  ...games
+    .filter((game) => game.data.date instanceof Date)
+    .map((game) => ({
+      title: game.data.title,
+      date: game.data.date as Date,
+      kind: 'Game',
+      href: game.data.href
+    }))
+]
+  .sort((a, b) => b.date.getTime() - a.date.getTime())
+  .slice(0, 2);
 ---
 
 <BaseLayout title="Home">
@@ -22,37 +37,21 @@ const featuredGames = games
 
   <section class="section-block">
     <div class="section-head">
-      <h2>Latest Writing</h2>
-      <a href={withBase('/writing')}>View all</a>
+      <h2>Latest</h2>
     </div>
     <ul class="text-list">
       {
-        posts.slice(0, 3).map((post) => (
+        latest.map((item) => (
           <li>
-            <a href={withBase(`/writing/${post.slug}`)}>{post.title}</a>
-            <time datetime={post.date.toISOString()}>
-              {post.date.toLocaleDateString('en-CA')}
+            <a href={item.href}>
+              {item.title}
+            </a>
+            <time datetime={item.date.toISOString()}>
+              {item.kind} | {formatDate(item.date)}
             </time>
           </li>
         ))
       }
     </ul>
-  </section>
-
-  <section class="section-block">
-    <div class="section-head">
-      <h2>Featured Games</h2>
-      <a href={withBase('/games')}>View all</a>
-    </div>
-    <div class="games-grid compact">
-      {
-        featuredGames.map((game) => (
-          <a href={game.data.href} class="game-card" aria-label={game.data.title}>
-            <img src={withBase(game.data.cover)} alt={game.data.title} loading="lazy" />
-            <span>{game.data.title}</span>
-          </a>
-        ))
-      }
-    </div>
   </section>
 </BaseLayout>

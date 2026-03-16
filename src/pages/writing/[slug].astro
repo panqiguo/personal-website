@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate } from '../../lib/date';
 import { getSitePosts } from '../../lib/posts';
 
 export async function getStaticPaths() {
@@ -20,7 +21,7 @@ const { Content } = await post.entry.render();
       <h2>{post.title}</h2>
       <p class="muted">
         <time datetime={post.date.toISOString()}>
-          {post.date.toLocaleDateString('en-CA')}
+          {formatDate(post.date)}
         </time>
       </p>
       <p class="article-summary">{post.summary}</p>

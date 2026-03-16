@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { withBase } from '../../lib/base';
+import { formatDate } from '../../lib/date';
 import { getSitePosts } from '../../lib/posts';
 
 const posts = await getSitePosts();
@@ -18,7 +19,7 @@ const posts = await getSitePosts();
               </a>
               <div class="post-meta-row">
                 <time datetime={post.date.toISOString()}>
-                  {post.date.toLocaleDateString('en-CA')}
+                  {formatDate(post.date)}
                 </time>
                 {post.featured && <strong>Featured</strong>}
               </div>
