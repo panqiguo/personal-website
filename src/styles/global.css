@@ -282,7 +282,7 @@ ul {
   width: 100%;
   max-width: 100%;
   height: auto;
-  border: 1px solid var(--line);
+  border: none;
 }
 
 .article img.image-large {
@@ -352,45 +352,39 @@ ul {
   padding: 0;
 }
 
-.article sup {
-  font-size: 0.78em;
-  line-height: 0;
+.article a.footnote-ref,
+.article a.footnote-backref-label {
+  display: inline-block;
+  color: #8f8f8f;
+  text-decoration: none;
+  line-height: 1;
+  padding-bottom: 0.14em;
+  border-bottom: 1px solid #b5b5b5;
 }
 
-.article section[data-footnotes] {
-  margin-top: calc(var(--space-3) * 2);
-  padding-top: 0;
+.article a.footnote-ref:hover,
+.article a.footnote-backref-label:hover {
+  color: #767676;
+  border-bottom-color: #9f9f9f;
 }
 
-.article section[data-footnotes] ol {
-  padding-left: 1.2rem;
+.article a.footnote-backref-label {
+  margin-right: 0.16em;
 }
 
-.article section[data-footnotes] li {
+.article .footnotes-list {
+  list-style: none;
+  padding-left: 0;
+  margin: calc(var(--space-3) * 2) 0 0;
+}
+
+.article .footnotes-list li {
+  padding-left: 0;
   margin-bottom: var(--space-1);
 }
 
-.article section[data-footnotes] > h2 {
-  display: none;
-}
-
-.article a[data-footnote-backref] {
-  margin-left: 0.35rem;
-  font-size: 0;
-  line-height: inherit;
-  text-decoration-line: underline;
-  text-decoration-color: #898989;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.3em;
-}
-
-.article a[data-footnote-backref]::before {
-  content: "↩\FE0E";
-  font-size: 0.92rem;
-}
-
-.article a[data-footnote-backref]::after {
-  content: "";
+.article .footnotes-list p {
+  margin: 0;
 }
 
 .article-index-link {
