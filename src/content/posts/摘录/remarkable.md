@@ -26,3 +26,23 @@
 6. 勇者斗恶龙7 重制版 ドラゴンクエストVII Reimagined [](https://www.douban.com/subject/37523509/)
    ![](./remarkable-assets/dq7-reimagined.jpg "small")
    > 画面很好,ui很好,手感很好, 故事也有点睛之笔, 在许多年前应该是一个好的作品，但是在今天这个讲故事的方式显得拖沓，不和谐!
+
+7. 司辰之书 BOOK OF HOURS [](https://store.steampowered.com/app/1028310/BOOK_OF_HOURS/)
+   ![](./remarkable-assets/book-of-hours.jpg "small")
+   > Codex 注：
+   > - 把“整理图书馆、研究知识、修复藏品”做成核心循环，这个方向很少见，也很完整
+   > - 它延续了同一个世界观，但明显把压力和惩罚感放低了，所以气质和密教模拟器很不一样
+   > - 参考：
+   >   [Weather Factory](https://weatherfactory.biz/book-of-hours/),
+   >   [Steam](https://store.steampowered.com/app/1028310/BOOK_OF_HOURS/),
+   >   [PC Gamer](https://www.pcgamer.com/cultist-simulator-devs-announce-book-of-hours-a-narrative-card-game-for-spooky-librarians/)
+
+8. 密教模拟器 Cultist Simulator [](https://store.steampowered.com/app/718670/Cultist_Simulator/)
+   ![](./remarkable-assets/cultist-simulator.jpg "small")
+   > Codex 注：
+   > - 它有意思的地方不只是题材，而是把“摸索规则”本身做成了体验的一部分
+   > - 叙事、系统和信息隐藏绑得很紧，所以它读起来和玩起来都不像普通卡牌游戏
+   > - 参考：
+   >   [Weather Factory](https://weatherfactory.biz/cultist-simulator/),
+   >   [Alpha and the Why](https://weatherfactory.biz/cultist-simulator-the-alpha-and-the-why/),
+   >   [itch.io 采访](https://itch.io/blog/37131/the-internet-is-not-a-kind-place-for-human-brains-an-interview-with-the-masterminds-behind-cultist-simulator)

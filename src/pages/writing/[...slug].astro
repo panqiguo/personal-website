@@ -2,12 +2,12 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { withBase } from '../../lib/base';
 import { formatDate } from '../../lib/date';
-import { getSitePosts } from '../../lib/posts';
+import { getPostsBySection } from '../../lib/posts';
 
 export async function getStaticPaths() {
-  const posts = await getSitePosts();
+  const posts = await getPostsBySection('散文');
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: post.path },
     props: { post }
   }));
 }
@@ -34,6 +34,6 @@ const { Content } = await post.entry.render();
 
     <div class="space"></div>
 
-    <a href={withBase('/writing')} class="article-index-link">Back to Writing</a>
+    <a href={withBase('/writing')} class="article-index-link">Back to 散文</a>
   </article>
 </BaseLayout>

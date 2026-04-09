@@ -14,11 +14,13 @@ type PostOverrides = Record<string, PostOverride>;
 
 export type SitePost = {
   slug: string;
+  path: string;
   title: string;
   date: Date;
   summary?: string;
   featured: boolean;
   tags: string[];
+  section: '散文' | '摘录' | '未分类';
   entry: CollectionEntry<'posts'>;
 };
 
@@ -28,6 +30,20 @@ const META_FILE = path.join(process.cwd(), 'src/content/posts-meta.json');
 function titleFromEntryId(id: string): string {
   const normalized = id.endsWith('/index') ? id.slice(0, -6) : id;
   return path.basename(normalized).replace(/\.md$/i, '');
+}
+
+function sectionFromEntryId(id: string): SitePost['section'] {
+  const [firstSegment] = id.split('/');
+  if (firstSegment === '散文' || firstSegment === '摘录') return firstSegment;
+  return '未分类';
+}
+
+function publicPathFromSlug(slug: string, section: SitePost['section']): string {
+  const prefix = `${section}/`;
+  if ((section === '散文' || section === '摘录') && slug.startsWith(prefix)) {
+    return slug.slice(prefix.length);
+  }
+  return slug;
 }
 
 function safeDate(input?: string): Date | null {
@@ -85,6 +101,7 @@ export async function getSitePosts(): Promise<SitePost[]> {
   const mapped = await Promise.all(
     entries.map(async (entry) => {
       const baseTitle = titleFromEntryId(entry.id);
+      const section = sectionFromEntryId(entry.id);
       const override = overrides[entry.slug] ?? overrides[baseTitle] ?? {};
       const fallbackDate = await defaultDate(entry);
       const date =
@@ -93,11 +110,13 @@ export async function getSitePosts(): Promise<SitePost[]> {
 
       return {
         slug: entry.slug,
+        path: publicPathFromSlug(entry.slug, section),
         title: override.title ?? entry.data.title ?? baseTitle,
         date,
         summary: override.summary ?? entry.data.summary,
         featured: override.featured ?? entry.data.featured ?? false,
         tags: override.tags ?? entry.data.tags ?? [],
+        section,
         entry
       } satisfies SitePost;
     })
@@ -109,4 +128,9 @@ export async function getSitePosts(): Promise<SitePost[]> {
   });
 
   return mapped;
+}
+
+export async function getPostsBySection(section: Extract<SitePost['section'], '散文' | '摘录'>) {
+  const posts = await getSitePosts();
+  return posts.filter((post) => post.section === section);
 }

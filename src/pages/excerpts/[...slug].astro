@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../lib/base';
+import { formatDate } from '../../lib/date';
+import { getPostsBySection } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const excerpts = await getPostsBySection('摘录');
+  return excerpts.map((excerpt) => ({
+    params: { slug: excerpt.path },
+    props: { excerpt }
+  }));
+}
+
+const { excerpt } = Astro.props;
+const { Content } = await excerpt.entry.render();
+---
+
+<BaseLayout title={excerpt.title}>
+  <article class="article">
+    <header>
+      <h1>{excerpt.title}</h1>
+      <p class="muted article-date">
+        <time datetime={excerpt.date.toISOString()}>
+          {formatDate(excerpt.date)}
+        </time>
+      </p>
+      <p class="article-summary">{excerpt.summary}</p>
+    </header>
+
+    <div class="space"></div>
+
+    <Content />
+
+    <div class="space"></div>
+
+    <a href={withBase('/excerpts')} class="article-index-link">Back to Excerpts</a>
+  </article>
+</BaseLayout>

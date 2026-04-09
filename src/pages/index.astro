@@ -10,8 +10,8 @@ const latest = [
   ...posts.map((post) => ({
     title: post.title,
     date: post.date,
-    kind: 'Writing',
-    href: withBase(`/writing/${post.slug}`)
+    kind: post.section,
+    href: withBase(`${post.section === '摘录' ? '/excerpts' : '/writing'}/${post.path}`)
   })),
   ...games
     .filter((game) => game.data.date instanceof Date)
@@ -23,16 +23,10 @@ const latest = [
     }))
 ]
   .sort((a, b) => b.date.getTime() - a.date.getTime())
-  .slice(0, 2);
+  .slice(0, 3);
 ---
 
 <BaseLayout title="Home">
-  <p>
-    我在这里写一些长期有价值的笔记，也会记录自己做过、玩过、推荐过的游戏。
-    这个网站希望像一本纸质册子: 简单、安静、可长期维护。
-  </p>
-
-  <div class="space"></div>
 
   <p>
     这是一些最新的内容：

@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../lib/base';
+import { getPostsBySection } from '../../lib/posts';
+
+const excerpts = await getPostsBySection('摘录');
+---
+
+<BaseLayout title="摘录">
+
+  <ul class="post-list">
+    {
+      excerpts.map((excerpt) => (
+        <li>
+          <div class="post-line">
+            <a href={withBase(`/excerpts/${excerpt.path}`)} class="post-title">
+              {excerpt.title}
+            </a>
+            {excerpt.featured && (
+              <div class="post-meta-row">
+                <strong>Featured</strong>
+              </div>
+            )}
+          </div>
+          {excerpt.summary && <p>{excerpt.summary}</p>}
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

@@ -17,7 +17,7 @@ const sorted = games.sort((a, b) => {
       {
         sorted.map((game) => (
           <a href={game.data.href} class="game-card" aria-label={game.data.title}>
-            <img src={withBase(game.data.cover)} alt={game.data.title} loading="lazy" />
+            <img src={withBase(game.data.cover.src)} alt={game.data.title} loading="lazy" />
             <div>
               <h2>{game.data.title}</h2>
               <p>{game.data.summary}</p>

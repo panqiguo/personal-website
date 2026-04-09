@@ -1,20 +1,20 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { withBase } from '../../lib/base';
-import { getSitePosts } from '../../lib/posts';
+import { getPostsBySection } from '../../lib/posts';
 
-const posts = await getSitePosts();
+const posts = await getPostsBySection('散文');
 ---
 
-<BaseLayout title="Writing">
+<BaseLayout title="散文">
 
     <ul class="post-list">
       {
         posts.map((post) => (
           <li>
             <div class="post-line">
-              <a href={withBase(`/writing/${post.slug}`)} class="post-title">
-                {post.title}
+              <a href={withBase(`/writing/${post.path}`)} class="post-title">
+              {post.title}
               </a>
               {post.featured && (
                 <div class="post-meta-row">
