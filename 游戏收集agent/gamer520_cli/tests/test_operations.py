@@ -48,6 +48,37 @@ def test_latest_json():
     assert data["total_rows"] == 5
 
 
+def test_latest_platform_includes_cross_platform_rows():
+    rows = read_csv(FIXTURE_CSV)
+    rows.append(
+        {
+            "帖子发布日期": "2026-06-07",
+            "平台": "PC/Switch",
+            "标题": "Game Zeta",
+            "标签": "story",
+            "一句话描述": "A cross-platform game.",
+            "推荐度": "3",
+            "推荐标签": "可试",
+            "判断理由": "Cross-platform fixture.",
+            "链接": "https://www.gamer520.com/100006.html",
+            "用户备注": "",
+        }
+    )
+    csv_path = _test_csv(rows)
+    try:
+        for platform in ("PC", "Switch"):
+            result = runner.invoke(
+                app,
+                ["latest", "--platform", platform, "--csv", csv_path, "--json"],
+            )
+            assert result.exit_code == 0
+            data = json.loads(result.stdout)
+            assert data["latest_date"] == "2026-06-07"
+            assert data["latest_link_id"] == 100006
+    finally:
+        os.unlink(csv_path)
+
+
 def test_search_by_query():
     result = runner.invoke(app, ["search", "Alpha", "--csv", str(FIXTURE_CSV)])
     assert result.exit_code == 0

@@ -26,11 +26,11 @@ But there are other jobs you can't learn about, because no one is doing them yet
 
 And yet every May, speakers all over the country fire up the Standard Graduation Speech, the theme of which is: don't give up on your dreams. I know what they mean, but this is a bad way to put it, because it implies you're supposed to be bound by some plan you made early on. The computer world has a name for this: premature optimization. And it is synonymous with disaster. These speakers would do better to say simply, don't give up.
 
-然而，每年五月，全国各地的演讲者还是会启动那篇标准毕业演说，主题是：不要放弃你的梦想。我明白他们想表达什么，但这种说法并不好，因为它暗示你应该被自己早年定下的某个计划束缚住。计算机领域有一个词来形容这种事：过早优化。它几乎就是灾难的同义词。这些演讲者还不如只说一句：不要放弃。
+===然而，每年五月，全国各地的演讲者还是会启动那篇标准毕业演说，主题是：不要放弃你的梦想。我明白他们想表达什么，但这种说法并不好，因为它暗示你应该被自己早年定下的某个计划束缚住。计算机领域有一个词来形容这种事：过早优化。它几乎就是灾难的同义词。这些演讲者还不如只说一句：不要放弃。===
 
 What they really mean is, don't get demoralized. Don't think that you can't do what other people can. And I agree you shouldn't underestimate your potential. People who've done great things tend to seem as if they were a race apart. And most biographies only exaggerate this illusion, partly due to the worshipful attitude biographers inevitably sink into, and partly because, knowing how the story ends, they can't help streamlining the plot till it seems like the subject's life was a matter of destiny, the mere unfolding of some innate genius. In fact I suspect if you had the sixteen year old Shakespeare or Einstein in school with you, they'd seem impressive, but not totally unlike your other friends.
 
-他们真正想说的是：不要灰心丧气。不要认为别人能做到的事情你做不到。我也同意，你不应该低估自己的潜力。做出过伟大事情的人，常常看起来像是另一个物种。大多数传记只会进一步夸大这种错觉：一部分原因是传记作者难免会陷入崇拜的态度；另一部分原因是，他们已经知道故事的结局，于是忍不住把情节整理得过于顺畅，让主人公的一生看起来仿佛命中注定，只是某种天赋异禀逐渐展开的过程。事实上，我怀疑如果十六岁的莎士比亚或爱因斯坦和你在同一所学校，他们当然会令人印象深刻，但不会与其他朋友截然不同。
+===他们真正想说的是：不要灰心丧气。不要认为别人能做到的事情你做不到。我也同意，你不应该低估自己的潜力。做出过伟大事情的人，常常看起来像是另一个物种。大多数传记只会进一步夸大这种错觉：一部分原因是传记作者难免会陷入崇拜的态度；另一部分原因是，他们已经知道故事的结局，于是忍不住把情节整理得过于顺畅，让主人公的一生看起来仿佛命中注定，只是某种天赋异禀逐渐展开的过程。事实上，我怀疑如果十六岁的莎士比亚或爱因斯坦和你在同一所学校，他们当然会令人印象深刻，但不会与其他朋友截然不同。===
 
 Which is an uncomfortable thought. If they were just like us, then they had to work very hard to do what they did. And that's one reason we like to believe in genius. It gives us an excuse for being lazy. If these guys were able to do what they did only because of some magic Shakespeareness or Einsteinness, then it's not our fault if we can't do something as good.
 
@@ -76,7 +76,7 @@ How do you do that, though? Even if math is upwind of economics, how are you sup
 
 但怎样才能做到呢？即使数学位于经济学的上风处，一个高中生又怎么可能知道这一点？
 
-Well, you don't, and that's what you need to find out. Look for smart people and hard problems. Smart people tend to clump together, and if you can find such a clump, it's probably worthwhile to join it. But it's not straightforward to find these, because there is a lot of faking going on.
+===Well, you don't, and that's what you need to find out. Look for smart people and hard problems. Smart people tend to clump together, and if you can find such a clump, it's probably worthwhile to join it. But it's not straightforward to find these, because there is a lot of faking going on.===
 
 答案是，你确实不知道，而这正是你需要弄清楚的事情。去寻找聪明的人和困难的问题。聪明人往往会聚集在一起，如果你能找到这样的聚集地，通常值得加入进去。但要找到它们并不简单，因为四处都有很多伪装。
 
@@ -84,7 +84,7 @@ To a newly arrived undergraduate, all university departments look much the same.
 
 对于刚进入大学的本科生来说，所有院系看起来都差不多。教授们似乎都高深莫测，发表的论文外行人完全看不懂。但有些领域的论文难懂，是因为其中充满了困难的思想；另一些领域的论文则故意写得晦涩，好让人以为它们表达了什么重要内容。这个说法听起来也许很冒犯，但著名的《社会文本》事件已经通过实验验证了这一点。一位物理学家怀疑，文学理论家发表的论文常常只是一些听上去很有思想的胡言乱语，于是他故意写了一篇充满此类胡言乱语的论文，投稿给一家文学理论期刊，而那家期刊真的把它发表了。
 
-The best protection is always to be working on hard problems. Writing novels is hard. Reading novels isn't. Hard means worry: if you're not worrying that something you're making will come out badly, or that you won't be able to understand something you're studying, then it isn't hard enough. There has to be suspense.
+===The best protection is always to be working on hard problems. Writing novels is hard. Reading novels isn't. Hard means worry: if you're not worrying that something you're making will come out badly, or that you won't be able to understand something you're studying, then it isn't hard enough. There has to be suspense.
 
 最好的防护措施，始终是去处理困难的问题。写小说很难，读小说则不难。所谓困难，意味着担心：如果你并不担心自己做出来的东西会很糟，或者担心自己无法理解正在学习的内容，那么它还不够困难。事情必须带有悬念。
 
@@ -180,7 +180,7 @@ And what's your real job supposed to be? Unless you're Mozart, your first task i
 
 那么，你真正的工作究竟应该是什么？除非你是莫扎特，否则你的首要任务就是弄清楚这一点。有哪些伟大的事情值得去做？富有想象力的人在哪里？最重要的是，你对什么感兴趣？“天赋”这个词容易误导人，因为它暗示某种与生俱来的东西。最强大的天赋，其实是对某个问题如饥似渴的兴趣，而这类兴趣常常是后天培养出来的品味。
 
-A distorted version of this idea has filtered into popular culture under the name "passion." I recently saw an ad for waiters saying they wanted people with a "passion for service." The real thing is not something one could have for waiting on tables. And passion is a bad word for it. A better name would be curiosity.
+===A distorted version of this idea has filtered into popular culture under the name "passion." I recently saw an ad for waiters saying they wanted people with a "passion for service." The real thing is not something one could have for waiting on tables. And passion is a bad word for it. A better name would be curiosity.
 
 这个想法经过扭曲之后，以“热情”之名渗入了流行文化。我最近看到一则招聘服务员的广告，说他们希望应聘者对“服务充满热情”。真正的那种东西，不可能用在端盘子上。而且，“热情”也不是一个好词。更合适的名字是好奇心。
 
@@ -192,7 +192,7 @@ Curiosity turns work into play. For Einstein, relativity wasn't a book full of h
 
 好奇心会把工作变成游戏。对爱因斯坦来说，相对论不是一本充满难题、必须为了考试而学会的书，而是一个他试图解开的谜。所以，对他而言，发明相对论所带来的工作感，可能反而比今天某个学生在课堂上学习相对论更少。
 
-One of the most dangerous illusions you get from school is the idea that doing great things requires a lot of discipline. Most subjects are taught in such a boring way that it's only by discipline that you can flog yourself through them. So I was surprised when, early in college, I read a quote by Wittgenstein saying that he had no self-discipline and had never been able to deny himself anything, not even a cup of coffee.
+===One of the most dangerous illusions you get from school is the idea that doing great things requires a lot of discipline. Most subjects are taught in such a boring way that it's only by discipline that you can flog yourself through them. So I was surprised when, early in college, I read a quote by Wittgenstein saying that he had no self-discipline and had never been able to deny himself anything, not even a cup of coffee.
 
 学校带给你的最危险的错觉之一，是认为做出伟大的事情需要极强的自律。大多数学科都被教得如此乏味，以至于你只有靠纪律鞭打自己，才能勉强熬过去。所以，大学刚入学时，我读到维特根斯坦的一句话，感到很惊讶。他说自己毫无自律，从来无法拒绝自己想要的东西，甚至连一杯咖啡都拒绝不了。
 
@@ -204,11 +204,11 @@ I'm not saying you can get away with zero self-discipline. You probably need abo
 
 我并不是说，你可以完全没有自律。你大概仍然需要一点，程度和逼自己出门跑步差不多。我经常不情愿去跑步，但一旦开始跑，我就会享受它。如果好几天没有跑步，我会感觉不舒服。做出伟大事情的人也是如此。他们知道，如果不工作，自己就会感觉糟糕；他们也有足够的纪律，让自己坐到书桌前开始工作。但一旦开始，兴趣就会接管一切，纪律也不再必要。
 
-Do you think Shakespeare was gritting his teeth and diligently trying to write Great Literature? Of course not. He was having fun. That's why he's so good.
+===Do you think Shakespeare was gritting his teeth and diligently trying to write Great Literature? Of course not. He was having fun. That's why he's so good.
 
 你认为莎士比亚是在咬紧牙关，勤勤恳恳地努力创作“伟大文学”吗？当然不是。他玩得很开心。这正是他写得如此出色的原因。
 
-If you want to do good work, what you need is a great curiosity about a promising question. The critical moment for Einstein was when he looked at Maxwell's equations and said, what the hell is going on here?
+===If you want to do good work, what you need is a great curiosity about a promising question. The critical moment for Einstein was when he looked at Maxwell's equations and said, what the hell is going on here?
 
 如果你想做出好的工作，你需要的是对一个有希望的问题怀有强烈的好奇心。对爱因斯坦来说，关键时刻就是他看着麦克斯韦方程组，然后问：这里到底是怎么回事？
 
@@ -220,7 +220,7 @@ The great mathematician G. H. Hardy said he didn't like math in high school eith
 
 伟大的数学家 G. H. 哈代说，他在高中时同样不喜欢数学。他之所以开始学数学，只是因为自己比其他学生更擅长它。直到后来，他才发现数学很有趣——直到后来，他才开始提出问题，而不只是正确回答问题。
 
-When a friend of mine used to grumble because he had to write a paper for school, his mother would tell him: find a way to make it interesting. That's what you need to do: find a question that makes the world interesting. People who do great things look at the same world everyone else does, but notice some odd detail that's compellingly mysterious.
+===When a friend of mine used to grumble because he had to write a paper for school, his mother would tell him: find a way to make it interesting. That's what you need to do: find a question that makes the world interesting. People who do great things look at the same world everyone else does, but notice some odd detail that's compellingly mysterious.
 
 我的一个朋友以前总抱怨自己必须为学校写论文。他的母亲会告诉他：想办法让它变得有趣。你真正需要做的也是这样：找到一个问题，让世界变得有趣。做出伟大事情的人与其他人看到的是同一个世界，但他们注意到了某个奇怪的细节，而那个细节神秘得令人无法放下。
 
@@ -234,11 +234,11 @@ Now
 
 If it takes years to articulate great questions, what do you do now, at sixteen? Work toward finding one. Great questions don't appear suddenly. They gradually congeal in your head. And what makes them congeal is experience. So the way to find great questions is not to search for them — not to wander about thinking, what great discovery shall I make? You can't answer that; if you could, you'd have made it.
 
-如果真正的大问题需要多年才能表达清楚，那么十六岁时，你现在应该做什么？朝着找到其中一个问题的方向前进。伟大的问题不会突然出现。它们会逐渐在你的头脑里凝结。而让它们凝结的是经验。所以，寻找伟大问题的方法不是直接搜寻它们——不是到处游荡，心里想着，我应该做出什么伟大的发现？这个问题你无法回答；如果你能回答，你早就已经发现它了。
+===如果真正的大问题需要多年才能表达清楚，那么十六岁时，你现在应该做什么？朝着找到其中一个问题的方向前进。伟大的问题不会突然出现。它们会逐渐在你的头脑里凝结。而让它们凝结的是经验。所以，寻找伟大问题的方法不是直接搜寻它们——不是到处游荡，心里想着，我应该做出什么伟大的发现？这个问题你无法回答；如果你能回答，你早就已经发现它了。
 
 The way to get a big idea to appear in your head is not to hunt for big ideas, but to put in a lot of time on work that interests you, and in the process keep your mind open enough that a big idea can take roost. Einstein, Ford, and Beckenbauer all used this recipe. They all knew their work like a piano player knows the keys. So when something seemed amiss to them, they had the confidence to notice it.
 
-让一个大想法出现在头脑里的方法，不是追捕大想法，而是在令你感兴趣的工作上投入大量时间，同时让思想保持足够开放，以便一个大想法能在那里栖息。爱因斯坦、福特和贝肯鲍尔采用的都是这种方法。他们熟悉自己的工作，就像钢琴师熟悉琴键一样。因此，当某些地方看起来不太对劲时，他们有信心注意到它。
+===让一个大想法出现在头脑里的方法，不是追捕大想法，而是在令你感兴趣的工作上投入大量时间，同时让思想保持足够开放，以便一个大想法能在那里栖息。爱因斯坦、福特和贝肯鲍尔采用的都是这种方法。他们熟悉自己的工作，就像钢琴师熟悉琴键一样。因此，当某些地方看起来不太对劲时，他们有信心注意到它。
 
 Put in time how and on what? Just pick a project that seems interesting: to master some chunk of material, or to make something, or to answer some question. Choose a project that will take less than a month, and make it something you have the means to finish. Do something hard enough to stretch you, but only just, especially at first. If you're deciding between two projects, choose whichever seems most fun. If one blows up in your face, start another. Repeat till, like an internal combustion engine, the process becomes self-sustaining, and each project generates the next one. (This could take years.)
 
@@ -274,7 +274,7 @@ The important thing is to get out there and do stuff. Instead of waiting to be t
 
 Your life doesn't have to be shaped by admissions officers. It could be shaped by your own curiosity. It is for all ambitious adults. And you don't have to wait to start. In fact, you don't have to wait to be an adult. There's no switch inside you that magically flips when you turn a certain age or graduate from some institution. You start being an adult when you decide to take responsibility for your life. You can do that at any age. [10]
 
-你的人生不必由招生官塑造。它可以由你自己的好奇心塑造。所有有抱负的成年人都是如此。而且，你不必等待某个时刻才能开始。事实上，你甚至不必等到成年。你的身体里并不存在某个开关，会在你达到特定年龄或从某个机构毕业时神奇地翻转。你决定对自己的人生负责时，就开始成为成年人。任何年龄都可以做到这一点。[10]
+===你的人生不必由招生官塑造。它可以由你自己的好奇心塑造。所有有抱负的成年人都是如此。而且，你不必等待某个时刻才能开始。事实上，你甚至不必等到成年。你的身体里并不存在某个开关，会在你达到特定年龄或从某个机构毕业时神奇地翻转。你决定对自己的人生负责时，就开始成为成年人。任何年龄都可以做到这一点。[10]
 
 This may sound like bullshit. I'm just a minor, you may think, I have no money, I have to live at home, I have to do what adults tell me all day long. Well, most adults labor under restrictions just as cumbersome, and they manage to get things done. If you think it's restrictive being a kid, imagine having kids.
 

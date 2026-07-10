@@ -194,7 +194,7 @@ In the average American high school, you have a choice of pretending to do somet
 
 [8] It's ok to work on something to make a lot of money. You need to solve the money problem somehow, and there's nothing wrong with doing that efficiently by trying to make a lot at once. I suppose it would even be ok to be interested in money for its own sake; whatever floats your boat. Just so long as you're conscious of your motivations. The thing to avoid is unconsciously letting the need for money warp your ideas about what kind of work you find most interesting.
 
-[8] 为了赚很多钱而从事某项工作，并没有什么问题。你总要以某种方式解决金钱问题。如果试图一次性赚到足够多的钱能够高效地解决它，也无可厚非。我想，即使一个人单纯对钱本身感兴趣，也没有问题。各有所好。重要的是，你必须清楚自己的动机。真正需要避免的，是在毫无意识的情况下，让赚钱的需要扭曲自己对“什么工作最有趣”的判断。
+===[8] 为了赚很多钱而从事某项工作，并没有什么问题。你总要以某种方式解决金钱问题。如果试图一次性赚到足够多的钱能够高效地解决它，也无可厚非。我想，即使一个人单纯对钱本身感兴趣，也没有问题。各有所好。重要的是，你必须清楚自己的动机。真正需要避免的，是在毫无意识的情况下，让赚钱的需要扭曲自己对“什么工作最有趣”的判断。===
 
 [9] Many people face this question on a smaller scale with individual projects. But it's easier both to recognize and to accept a dead end in a single project than to abandon some type of work entirely. The more determined you are, the harder it gets. Like a Spanish Flu victim, you're fighting your own immune system: Instead of giving up, you tell yourself, I should just try harder. And who can say you're not right?
 

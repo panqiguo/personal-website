@@ -33,6 +33,10 @@ uv run --project 游戏收集agent/gamer520_cli gamer520 latest --platform Switc
 # 搜索
 uv run --project 游戏收集agent/gamer520_cli gamer520 search "关键词" --json
 
+# 列表页批量对账（标题优先，URL 其次）
+uv run --project 游戏收集agent/gamer520_cli gamer520 scrape-list https://www.gamer520.com/pcplay \
+  | uv run --project 游戏收集agent/gamer520_cli gamer520 reconcile --stdin --platform PC
+
 # 导出最近 N 天
 uv run --project 游戏收集agent/gamer520_cli gamer520 export --days 7 --json
 

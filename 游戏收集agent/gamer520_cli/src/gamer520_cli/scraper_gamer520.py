@@ -34,6 +34,19 @@ _SKIP_IN_DESC = re.compile(
     re.IGNORECASE,
 )
 
+_BOILERPLATE_START = re.compile(
+    r"用\s*PC\s*的用户|用手机的用户|获取地址|立即获取|"
+    r"本页面顶部|本页面下面|小站为非商业性|资源信息均转载自互联网|"
+    r"小站没有充值|没有售卖会员|没有购买[,，、\s]*打赏[,，、\s]*捐赠",
+    re.IGNORECASE,
+)
+
+
+def parse_site_title(raw_title: str) -> str:
+    """Return the game title before Gamer520's pipe-delimited package metadata."""
+    title = raw_title.split("|", 1)[0]
+    return re.sub(r"\s+", " ", title).strip()
+
 
 def _fetch(url: str) -> BeautifulSoup:
     resp = requests.get(url, headers={"User-Agent": _USER_AGENT}, timeout=_TIMEOUT)
@@ -65,7 +78,8 @@ def scrape_list(url: str) -> list[dict]:
             continue
 
         href = str(a["href"]).strip()
-        title = (a.get("title") or a.get_text(separator=" ", strip=True)).strip()
+        raw_title = (a.get("title") or a.get_text(separator=" ", strip=True)).strip()
+        title = parse_site_title(raw_title)
         if not title or not re.search(r"/\d{4,}\.html$", href):
             continue
 
@@ -86,6 +100,7 @@ def scrape_list(url: str) -> list[dict]:
 
         results.append({
             "title": title,
+            "raw_title": raw_title,
             "url": href,
             "date": parsed_date,
             "date_text": date_text,
@@ -106,11 +121,15 @@ def scrape_detail(url: str) -> dict:
     soup = _fetch(url)
     full_text = soup.get_text(separator="\n")
 
+    raw_title = _extract_title(soup)
+    description = _extract_description(soup)
     return {
-        "title": _extract_title(soup),
+        "title": parse_site_title(raw_title),
+        "raw_title": raw_title,
         "game_release_date": _extract_release_date(full_text),
         "genres": _extract_genres(full_text),
-        "description": _extract_description(soup),
+        "description": description,
+        "description_quality": _description_quality(description),
     }
 
 
@@ -156,8 +175,8 @@ def _extract_description(soup: BeautifulSoup) -> str:
         total_chars = 0
         seen: set[str] = set()
         for el in content.find_all(["p", "li"]):
-            t = el.get_text(separator=" ", strip=True)
-            if len(t) > 30 and not _SKIP_IN_DESC.search(t) and t not in seen:
+            t = _clean_description_text(el.get_text(separator=" ", strip=True))
+            if _is_meaningful_description(t) and t not in seen:
                 chunks.append(t)
                 seen.add(t)
                 total_chars += len(t)
@@ -166,7 +185,38 @@ def _extract_description(soup: BeautifulSoup) -> str:
         if chunks:
             return " ".join(chunks)
 
+    for attrs in (
+        {"property": "og:description"},
+        {"name": "description"},
+    ):
+        if meta := soup.find("meta", attrs):
+            text = _clean_description_text(str(meta.get("content") or ""))
+            if _is_meaningful_description(text):
+                return text
+
     # Fallback: meaningful lines from full text
-    lines = [line.strip() for line in soup.get_text(separator="\n").split("\n")]
-    good = [line for line in lines if len(line) > 40 and not _SKIP_IN_DESC.search(line)]
+    lines = [
+        _clean_description_text(line)
+        for line in soup.get_text(separator="\n").split("\n")
+    ]
+    good = [line for line in lines if _is_meaningful_description(line)]
     return " ".join(good[:4])
+
+
+def _clean_description_text(text: str) -> str:
+    text = re.sub(r"\s+", " ", text).strip()
+    if match := _BOILERPLATE_START.search(text):
+        text = text[:match.start()].strip(" |。，,;|")
+    return text
+
+
+def _is_meaningful_description(text: str) -> bool:
+    return len(text) > 15 and not _SKIP_IN_DESC.search(text) and not _BOILERPLATE_START.search(text)
+
+
+def _description_quality(description: str) -> str:
+    if not description:
+        return "missing"
+    if len(description) < 80:
+        return "limited"
+    return "sufficient"

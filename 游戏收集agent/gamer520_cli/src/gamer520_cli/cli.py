@@ -176,7 +176,10 @@ def latest(
 ):
     rows = read_csv(_resolve_csv(csv_opt))
     if platform:
-        rows = [r for r in rows if r.get("平台", "") == platform]
+        if platform in ("PC", "Switch"):
+            rows = [r for r in rows if platform in r.get("平台", "").split("/")]
+        else:
+            rows = [r for r in rows if r.get("平台", "") == platform]
         if not rows:
             err_console.print(f"No rows found for platform '{platform}'", style="red")
             raise typer.Exit(code=1)
@@ -206,7 +209,7 @@ def latest(
 def search(
     query: str = typer.Argument(
         ...,
-        help="Search query — fuzzy title match (primary), link ID if all digits, substring on all other fields",
+        help="Case-insensitive substring query across CSV fields",
     ),
     field: Optional[str] = typer.Option(
         None,
@@ -250,6 +253,85 @@ def search(
                 print(
                     f"{r['帖子发布日期']} [{r['平台']}] {r['标题']} (score: {r['推荐度']}) {r['链接']}"
                 )
+
+
+@app.command()
+def reconcile(
+    platform: str = typer.Option(..., "--platform", help="Source platform: PC or Switch"),
+    stdin: bool = typer.Option(False, "--stdin", help="Read scrape-list JSON array from stdin"),
+    file_path: Optional[str] = typer.Option(
+        None,
+        "--file",
+        "-f",
+        help="Read scrape-list JSON array from a file",
+    ),
+    latest_date: Optional[str] = typer.Option(
+        None,
+        "--latest-date",
+        help="Override the database-derived boundary date (YYYY-MM-DD)",
+    ),
+    candidate_limit: int = typer.Option(
+        3,
+        "--candidate-limit",
+        min=1,
+        help="Maximum similar-title candidates per ambiguous item",
+    ),
+    csv_opt: Optional[str] = CSV_OPT,
+):
+    """Classify scraped list items as existing, platform merge, ambiguous, or new."""
+    if platform not in ("PC", "Switch"):
+        err_console.print("Error: --platform must be PC or Switch", style="red")
+        raise typer.Exit(code=2)
+    if stdin == bool(file_path):
+        err_console.print("Error: use exactly one of --stdin or --file PATH", style="red")
+        raise typer.Exit(code=2)
+
+    try:
+        raw = sys.stdin.read() if stdin else Path(file_path).read_text(encoding="utf-8")
+        items = json.loads(raw)
+    except (OSError, json.JSONDecodeError) as e:
+        err_console.print(f"Error reading reconcile input: {e}", style="red")
+        raise typer.Exit(code=2)
+    if not isinstance(items, list) or any(not isinstance(item, dict) for item in items):
+        err_console.print("Error: reconcile input must be a JSON array of objects", style="red")
+        raise typer.Exit(code=2)
+
+    rows = read_csv(_resolve_csv(csv_opt))
+    if latest_date:
+        try:
+            boundary = date.fromisoformat(latest_date)
+        except ValueError:
+            err_console.print(
+                f"Error: invalid --latest-date '{latest_date}', expected YYYY-MM-DD",
+                style="red",
+            )
+            raise typer.Exit(code=2)
+    else:
+        platform_rows = [
+            row for row in rows if platform in row.get("平台", "").split("/")
+        ]
+        if not platform_rows:
+            err_console.print(
+                f"Error: no database rows found for platform '{platform}'",
+                style="red",
+            )
+            raise typer.Exit(code=1)
+        boundary, _, _ = _latest_info(platform_rows)
+
+    from .reconcile import reconcile_items
+
+    try:
+        result = reconcile_items(
+            rows,
+            items,
+            platform=platform,
+            latest_date=boundary,
+            candidate_limit=candidate_limit,
+        )
+    except ValueError as e:
+        err_console.print(f"Error: {e}", style="red")
+        raise typer.Exit(code=2)
+    print(json.dumps(result, ensure_ascii=False, indent=2))
 
 
 @app.command()
@@ -813,7 +895,7 @@ def scrape_list_cmd(
     url: str = typer.Argument(..., help="Game list page URL to scrape"),
     json_output: bool = typer.Option(True, "--json/--no-json", help="Output as JSON (default: true)"),
 ):
-    """Scrape a game list page; return [{title, url, date_text}].
+    """Scrape a game list page; return clean and raw titles, URL, and dates.
 
     Example:
       gamer520 scrape-list https://www.gamer520.com/pcplay
@@ -847,7 +929,7 @@ def scrape_detail_cmd(
     url: str = typer.Argument(..., help="Game detail page URL to scrape"),
     json_output: bool = typer.Option(True, "--json/--no-json", help="Output as JSON (default: true)"),
 ):
-    """Scrape a game detail page; return {title, release_date, genres, description}.
+    """Scrape a game detail page; return cleaned title and description metadata.
 
     Example:
       gamer520 scrape-detail https://www.gamer520.com/113322.html

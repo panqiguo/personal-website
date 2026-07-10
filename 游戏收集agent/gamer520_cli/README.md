@@ -25,6 +25,7 @@ cd 游戏收集agent/gamer520_cli && uv run gamer520 <command>
 |------|------|---------|
 | `latest` | 返回最新帖子发布日期和最大 link_id | `--platform PC\|Switch`、`--json` |
 | `search` | 全字段子串匹配；`--field` 限定单列 | `--field 字段名`、`--json`、`--limit`、`--full` |
+| `reconcile` | 批量对账列表页与数据库 | `--stdin`、`--file`、`--platform`、`--latest-date` |
 | `validate` | 校验 CSV 完整性和数据健康 | `--json` |
 | `doctor-check-repeat` | 检查库中所有条目，找出标题一致或链接一致的重复条目 | `--json` |
 | `sort` | 按帖子发布日期降序、同日期按 link_id 降序排列 | `--dry-run` |
@@ -32,8 +33,8 @@ cd 游戏收集agent/gamer520_cli && uv run gamer520 <command>
 | `remove` | 按标题精确删除 | `--title`、`--dry-run`、`--yes` |
 | `update` | 修改已有条目的字段 | `--title`、`--set KEY=VALUE`、`--dry-run`、`--yes` |
 | `export` | 按条件导出子集 | `--days`、`--date`、`--latest`、`--query`、`--platform`、`--format`、`--full` |
-| `scrape-list` | 抓取列表页 → `[{title, url, date, date_text}]` | `<url>` |
-| `scrape-detail` | 抓取详情页 → `{title, game_release_date, genres, description}` | `<url>` |
+| `scrape-list` | 抓取列表页，同时返回展示标题和原始标题 | `<url>` |
+| `scrape-detail` | 抓取并清洗详情页内容 | `<url>` |
 
 ## 命令详情
 
@@ -71,6 +72,25 @@ uv run gamer520 search "宝石少女" --full
 ```
 
 默认匹配所有 10 个字段。`--field 字段名` 限定到单列（任意中文字段名均可）。
+
+### `reconcile`
+
+将 `scrape-list` 的 JSON 数组与数据库批量对账。边界日期默认从数据库对应平台的最新记录推导。
+
+```bash
+uv run gamer520 scrape-list https://www.gamer520.com/pcplay \
+  | uv run gamer520 reconcile --stdin --platform PC
+
+uv run gamer520 reconcile --file pc-list.json --platform PC --latest-date 2026-07-09
+```
+
+匹配顺序是固定的：
+
+1. 规范标题完全一致
+2. 规范 URL 完全一致
+3. 标题相似度候选
+
+前两种可确定归入 `existing` 或 `platform_merges`。相似标题只进入 `ambiguous`，不会自动判定为同一游戏。若标题和 URL 分别指向不同的数据库记录，也会以 `title_url_conflict` 进入 `ambiguous`。无匹配的条目进入 `new`，早于边界的条目进入 `before_boundary`。
 
 ### `validate`
 
@@ -167,7 +187,9 @@ uv run gamer520 scrape-list https://www.gamer520.com/pcplay
 uv run gamer520 scrape-list https://www.gamer520.com/gameswitch
 ```
 
-返回：`[{"title": "...", "url": "...", "date": "2026-06-14", "date_text": "3小时前"}]`
+返回：`[{"title": "游戏展示名", "raw_title": "游戏展示名|官方中文|Build...|", "url": "...", "date": "2026-06-14", "date_text": "3小时前"}]`
+
+`title` 已在 scraper 中去掉第一个 `|` 之后的语言、版本和包信息；`raw_title` 保留站点原文便于追溯。
 
 `date` 从页面 `<time datetime="...">` 属性解析，是 gamer520 帖子发布日期，非游戏官方发行日期。
 
@@ -179,9 +201,11 @@ uv run gamer520 scrape-list https://www.gamer520.com/gameswitch
 uv run gamer520 scrape-detail https://www.gamer520.com/NNNNN.html
 ```
 
-返回：`{"title": "...", "game_release_date": "2026-04-03", "genres": "...", "description": "..."}`
+返回：`{"title": "...", "raw_title": "...|Build...|", "game_release_date": "2026-04-03", "genres": "...", "description": "...", "description_quality": "sufficient"}`
 
 注意：`game_release_date` 是游戏官方发行日期，与 `帖子发布日期` 是两个不同概念。
+
+`description` 会过滤获取地址、下载安装说明和站点广告。`description_quality` 可为 `sufficient`、`limited` 或 `missing`；后两种情况应谨慎评估或补充信息。
 
 ## 操作规范
 
@@ -231,10 +255,11 @@ uv run pytest
 
 | 文件 | 职责 |
 |------|------|
-| `cli.py` | Typer 命令入口，10 个命令 |
+| `cli.py` | Typer 命令入口 |
 | `csv_store.py` | UTF-8 with BOM 读写 |
 | `models.py` | GameRow 模型，CSV 字段映射 |
 | `normalize.py` | URL/标题规范化，link_id 提取 |
+| `reconcile.py` | 标题优先的批量对账与候选匹配 |
 | `scraper.py` | 抓取器注册表（新站点在此注册） |
 | `scraper_gamer520.py` | gamer520.com 专用 HTML 解析（页面结构变化时改此文件） |
 | `config.py` | 默认 CSV 路径 |
