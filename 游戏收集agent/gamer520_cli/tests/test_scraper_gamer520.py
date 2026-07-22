@@ -4,6 +4,7 @@ from gamer520_cli.scraper_gamer520 import (
     _description_quality,
     _extract_description,
     parse_site_title,
+    scrape_list,
 )
 
 
@@ -48,3 +49,27 @@ def test_description_quality_marks_short_or_missing_content():
     assert _description_quality("") == "missing"
     assert _description_quality("一段很短的介绍。") == "limited"
     assert _description_quality("这是一段足够长的游戏介绍。" * 10) == "sufficient"
+
+
+def test_scrape_list_skips_non_game_editorial_posts(monkeypatch):
+    soup = _soup(
+        """
+        <article class="post post-grid category-shen category-pcplay category-gameswitch">
+          <h2 class="entry-title"><a href="https://www.gamer520.com/117792.html"
+            title="您有2条未读消息 不看一下吗? 嘿嘿~[顶置2天]">公告</a></h2>
+          <time datetime="2026-07-11T11:00:44+08:00">1天前</time>
+        </article>
+        <article class="post post-grid category-pcplay">
+          <h2 class="entry-title"><a href="https://www.gamer520.com/117850.html"
+            title="瑞奇与叮当 时空跳转|豪华中文|">游戏</a></h2>
+          <time datetime="2026-07-12T09:00:00+08:00">3小时前</time>
+        </article>
+        """
+    )
+    monkeypatch.setattr(
+        "gamer520_cli.scraper_gamer520._fetch", lambda _url: soup
+    )
+
+    result = scrape_list("https://www.gamer520.com/pcplay")
+
+    assert [item["title"] for item in result] == ["瑞奇与叮当 时空跳转"]

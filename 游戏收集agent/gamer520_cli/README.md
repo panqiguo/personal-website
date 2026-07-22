@@ -18,6 +18,7 @@ cd 游戏收集agent/gamer520_cli && uv run gamer520 <command>
 |------|------|
 | 数据库 | `游戏收集agent/gamer520-games.csv` |
 | 口味文件 | `游戏收集agent/taste.txt` |
+| Doctor 复核账本 | `游戏收集agent/gamer520-doctor-reviews.json` |
 
 ## 命令一览
 
@@ -25,11 +26,13 @@ cd 游戏收集agent/gamer520_cli && uv run gamer520 <command>
 |------|------|---------|
 | `latest` | 返回最新帖子发布日期和最大 link_id | `--platform PC\|Switch`、`--json` |
 | `search` | 全字段子串匹配；`--field` 限定单列 | `--field 字段名`、`--json`、`--limit`、`--full` |
-| `reconcile` | 批量对账列表页与数据库 | `--stdin`、`--file`、`--platform`、`--latest-date` |
+| `reconcile` | 批量对账列表页与数据库 | `--stdin`、`--platform`、`--latest-date` |
+| `scan-updates` | 按平台自动分页抓取并对账 | `--platform`、`--max-pages`、`--debug` |
 | `validate` | 校验 CSV 完整性和数据健康 | `--json` |
-| `doctor-check-repeat` | 检查库中所有条目，找出标题一致或链接一致的重复条目 | `--json` |
+| `doctor` | 检查完全重复并报告高相似标题候选 | `--json`、`--similarity-threshold` |
+| `doctor-review` | 持久化相似标题的复核结论 | `--title`、`--decision`、`--reason`、`--dry-run`、`--yes` |
 | `sort` | 按帖子发布日期降序、同日期按 link_id 降序排列 | `--dry-run` |
-| `add` | 追加新条目（JSON 数组） | `--stdin`、`--file`、`--dry-run`、`--json` |
+| `add` | 从 stdin 追加新条目 | `--stdin`、`--dry-run`、`--json` |
 | `remove` | 按标题精确删除 | `--title`、`--dry-run`、`--yes` |
 | `update` | 修改已有条目的字段 | `--title`、`--set KEY=VALUE`、`--dry-run`、`--yes` |
 | `export` | 按条件导出子集 | `--days`、`--date`、`--latest`、`--query`、`--platform`、`--format`、`--full` |
@@ -66,7 +69,7 @@ total_rows: 306
 ```bash
 uv run gamer520 search "灰烬王国"
 uv run gamer520 search "115709"              # 链接 ID 子串
-uv run gamer520 search "优先推荐" --field 推荐标签
+uv run gamer520 search "5" --field 推荐度
 uv run gamer520 search "叙事" --json --limit 10
 uv run gamer520 search "宝石少女" --full
 ```
@@ -80,8 +83,6 @@ uv run gamer520 search "宝石少女" --full
 ```bash
 uv run gamer520 scrape-list https://www.gamer520.com/pcplay \
   | uv run gamer520 reconcile --stdin --platform PC
-
-uv run gamer520 reconcile --file pc-list.json --platform PC --latest-date 2026-07-09
 ```
 
 匹配顺序是固定的：
@@ -91,6 +92,22 @@ uv run gamer520 reconcile --file pc-list.json --platform PC --latest-date 2026-0
 3. 标题相似度候选
 
 前两种可确定归入 `existing` 或 `platform_merges`。相似标题只进入 `ambiguous`，不会自动判定为同一游戏。若标题和 URL 分别指向不同的数据库记录，也会以 `title_url_conflict` 进入 `ambiguous`。无匹配的条目进入 `new`，早于边界的条目进入 `before_boundary`。
+
+### `scan-updates`
+
+自动执行“抓取列表页 → reconcile → 翻页”，直到某页所有条目都早于对应平台的数据库边界。
+
+命令负责数据库边界推导、分页抓取和确定性候选分类，不做语义裁决。已存在项直接跳过；`new`、`ambiguous`、`platform_merges` 交给 Agent 调查、判断并调用通用写入命令处理。
+
+```bash
+uv run gamer520 scan-updates --platform all
+uv run gamer520 scan-updates --platform PC
+uv run gamer520 scan-updates --platform Switch --max-pages 15
+```
+
+`--platform all` 分别推导 PC/Switch 边界并一次完成两次扫描，同时用规范标题优先、URL 其次生成 `cross_platform_candidates`。它们只是代码可确定的跨平台候选，最终是否合并仍由 Agent 判断。汇总中的 `scanned_items` 包含已有记录；`actionable_candidates` 是平台间去重前的待处理条目；`unique_actionable_candidates`（同时也是组合结果的 `candidates`）才是跨平台去重后的真实候选数。
+
+输出 `complete: true` 才代表扫描完整。默认只输出状态、计数和需要处理的 `new`、`ambiguous`、`platform_merges`；排查问题时加 `--debug` 查看逐页、已存在和边界前数据。达到 `--max-pages` 仍未越过边界时命令返回非零。
 
 ### `validate`
 
@@ -103,18 +120,36 @@ uv run gamer520 validate --json
 
 检查项：表头完整性、日期格式、平台合法性、推荐度范围、URL 格式、链接重复、标题重复、空标题。
 
-### `doctor-check-repeat`
+### `doctor`
 
-对库中的所有条目进行检查，找出标题一致或者链接一致的重复条目。
+对数据库做通用体检：检查完全重复的规范标题和 URL，并报告高相似标题候选。
 
 ```bash
-uv run gamer520 doctor-check-repeat
-uv run gamer520 doctor-check-repeat --json
+uv run gamer520 doctor
+uv run gamer520 doctor --json
+uv run gamer520 doctor --similarity-threshold 0.9
 ```
 
-- **普通模式**：使用 `rich` 模块在终端直观、漂亮地展示出所有重复的分组及其所在的行号、标题、发布日期、链接等详细信息。如果没有重复，则输出健康提示信息。
-- **JSON 模式**：通过 `--json` 输出结构化的 JSON 结果，方便脚本或 AI 流程进一步分析处理。
-- **退出码**：发现重复条目时返回 `1`，数据库完全无重复时返回 `0`。
+- 完全重复标题或 URL：`valid: false`，退出码 `1`。
+- 高相似标题：`review_required: true`，但退出码 `0`。
+- `doctor` 只检查和报告，不修改数据；修正使用通用的 `update`、`remove`、`add`。
+
+### `doctor-review`
+
+记录两个标题是同一游戏还是不同游戏。标题可以来自尚未入库的扫描候选，不要求已存在于 CSV。结论保存在 `游戏收集agent/gamer520-doctor-reviews.json`。
+
+```bash
+uv run gamer520 doctor-review \
+  --title "深空梦里人 Citizen Sleeper" \
+  --title "深空梦里人2 Citizen Sleeper 2" \
+  --decision distinct \
+  --reason "系列一代与二代" \
+  --dry-run
+```
+
+- `distinct`：后续 `doctor` 不再将该组列为未决候选。
+- `same`：保留为待处理项，直到用 `update/remove` 修复数据。
+- 重复执行会更新原结论，可用于纠正之前的判断。
 
 ### `sort`
 
@@ -127,21 +162,18 @@ uv run gamer520 sort --dry-run
 
 ### `add`
 
-追加新条目。写入前自动校验字段完整性、格式、重复链接、重复标题。
+追加新条目。写入前自动组装字段并校验格式、重复链接和重复标题。推荐使用 `source + assessment`：来源字段直接复制扫描和详情结果，Agent 只生成语义评估。
 
 ```bash
 # heredoc stdin（推荐，避免中文 shell 转义问题）
 uv run gamer520 add --stdin --dry-run << 'ENDOFDATA'
-[{"帖子发布日期":"2026-06-14","平台":"PC","标题":"游戏名","标签":"叙事；探索","一句话描述":"...","推荐度":3,"推荐标签":"可试","判断理由":"...","链接":"https://www.gamer520.com/NNNNN.html","用户备注":""}]
+[{"source":{"date":"2026-06-14","platform":"PC","title":"游戏名","url":"https://www.gamer520.com/NNNNN.html"},"assessment":{"tags":["叙事","探索"],"description":"...","score":3,"reason":"..."}}]
 ENDOFDATA
 
 uv run gamer520 add --stdin << 'ENDOFDATA'
 [{...}]
 ENDOFDATA
 
-# 文件输入
-uv run gamer520 add --file pending.json --dry-run
-uv run gamer520 add --file pending.json
 ```
 
 ### `remove`
@@ -160,7 +192,7 @@ uv run gamer520 remove --title "精确标题" --yes
 ```bash
 uv run gamer520 update --title "舒适森林 Cozy Grove" --set "用户备注=玩过" --dry-run
 uv run gamer520 update --title "舒适森林 Cozy Grove" --set "用户备注=玩过" --yes
-uv run gamer520 update --title "游戏名" --set "推荐度=4" --set "推荐标签=推荐" --yes
+uv run gamer520 update --title "游戏名" --set "推荐度=4" --yes
 ```
 
 ### `export`
@@ -225,8 +257,7 @@ uv run gamer520 scrape-detail https://www.gamer520.com/NNNNN.html
 | 标题 | string | 去掉版本/build 修饰，必要时补充英文名 |
 | 标签 | string | 中文分号 `；` 分隔 |
 | 一句话描述 | string | 基于详情页内容 |
-| 推荐度 | `1`–`5` | |
-| 推荐标签 | string | `优先推荐` / `推荐` / `可试` / `不推荐` / `非常不推荐` |
+| 推荐度 | `1`–`5` | 唯一推荐事实源；展示时映射为 `非常不推荐 / 不推荐 / 可试 / 推荐 / 优先推荐` |
 | 判断理由 | string | 结合口味解释评分 |
 | 链接 | URL | gamer520 条目页 |
 | 用户备注 | string | 新增默认留空 |
@@ -260,6 +291,8 @@ uv run pytest
 | `models.py` | GameRow 模型，CSV 字段映射 |
 | `normalize.py` | URL/标题规范化，link_id 提取 |
 | `reconcile.py` | 标题优先的批量对账与候选匹配 |
+| `scan_updates.py` | 自动分页抓取、边界停止与对账汇总 |
+| `doctor_reviews.py` | Doctor 复核结论的读写与原子替换 |
 | `scraper.py` | 抓取器注册表（新站点在此注册） |
 | `scraper_gamer520.py` | gamer520.com 专用 HTML 解析（页面结构变化时改此文件） |
 | `config.py` | 默认 CSV 路径 |

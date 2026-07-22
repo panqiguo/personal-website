@@ -41,6 +41,10 @@ _BOILERPLATE_START = re.compile(
     re.IGNORECASE,
 )
 
+# Site editorial/utility categories that can be pinned into game listing pages
+# but are not standalone games and must never become scan candidates.
+_NON_GAME_ARTICLE_CLASSES = {"category-shen"}
+
 
 def parse_site_title(raw_title: str) -> str:
     """Return the game title before Gamer520's pipe-delimited package metadata."""
@@ -69,6 +73,10 @@ def scrape_list(url: str) -> list[dict]:
     results: list[dict] = []
 
     for article in soup.find_all("article", class_=re.compile(r"\bpost\b")):
+        article_classes = set(article.get("class") or [])
+        if article_classes & _NON_GAME_ARTICLE_CLASSES:
+            continue
+
         # Title + URL from <h2 class="entry-title"><a ...>
         h2 = article.find("h2", class_="entry-title")
         if not h2:

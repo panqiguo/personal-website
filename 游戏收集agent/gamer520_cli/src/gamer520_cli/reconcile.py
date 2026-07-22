@@ -182,14 +182,14 @@ def _similar_title_candidates(
 ) -> list[dict[str, Any]]:
     matches: list[tuple[float, dict[str, str]]] = []
     for row in rows:
-        score = _title_similarity(source_title, row.get("标题", ""))
+        score = title_similarity(source_title, row.get("标题", ""))
         if score >= 0.62:
             matches.append((score, row))
     matches.sort(key=lambda item: item[0], reverse=True)
     return [_match_view(row, score=score) for score, row in matches[:limit]]
 
 
-def _title_similarity(left: str, right: str) -> float:
+def title_similarity(left: str, right: str) -> float:
     left_key = normalize_title_key(left)
     right_key = normalize_title_key(right)
     if not left_key or not right_key:

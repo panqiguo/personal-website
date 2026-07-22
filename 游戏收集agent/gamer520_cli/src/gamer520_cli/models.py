@@ -11,7 +11,6 @@ class GameRow(BaseModel):
     tags: str
     one_line_description: str
     score: int
-    recommendation_label: str
     reasoning: str
     url: AnyUrl
     user_note: str = ""
@@ -31,7 +30,6 @@ CSV_FIELDS = [
     "标签",
     "一句话描述",
     "推荐度",
-    "推荐标签",
     "判断理由",
     "链接",
     "用户备注",
@@ -44,7 +42,6 @@ MODEL_FIELD_MAP: dict[str, str] = {
     "标签": "tags",
     "一句话描述": "one_line_description",
     "推荐度": "score",
-    "推荐标签": "recommendation_label",
     "判断理由": "reasoning",
     "链接": "url",
     "用户备注": "user_note",
@@ -59,7 +56,6 @@ def row_to_csv_dict(row: GameRow) -> dict[str, str]:
         "标签": row.tags,
         "一句话描述": row.one_line_description,
         "推荐度": str(row.score),
-        "推荐标签": row.recommendation_label,
         "判断理由": row.reasoning,
         "链接": str(row.url),
         "用户备注": row.user_note,

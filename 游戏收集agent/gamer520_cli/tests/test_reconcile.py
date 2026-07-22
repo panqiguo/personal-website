@@ -99,6 +99,13 @@ def test_reconcile_command_reads_scrape_list_json_from_stdin():
     assert output["existing"][0]["source"]["raw_title"].endswith("Build.123|")
 
 
+def test_reconcile_has_no_file_input_option():
+    result = runner.invoke(app, ["reconcile", "--help"])
+
+    assert result.exit_code == 0
+    assert "--file" not in result.stdout
+
+
 def test_reconcile_surfaces_title_and_url_conflicts():
     rows = read_csv(FIXTURE_CSV)
     result = reconcile_items(

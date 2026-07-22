@@ -14,8 +14,8 @@ def _make_csv(content: str) -> str:
 
 
 def test_read_csv_utf8_bom():
-    header = "帖子发布日期,平台,标题,标签,一句话描述,推荐度,推荐标签,判断理由,链接,用户备注\n"
-    data = '2026-06-06,PC,Test Game,action,Desc.,3,推荐,Reason,https://www.gamer520.com/1.html,\n'
+    header = "帖子发布日期,平台,标题,标签,一句话描述,推荐度,判断理由,链接,用户备注\n"
+    data = '2026-06-06,PC,Test Game,action,Desc.,3,Reason,https://www.gamer520.com/1.html,\n'
     content = header + data
     path = _make_csv(content)
     with open(path, "rb") as f:
@@ -39,7 +39,6 @@ def test_write_csv_preserves_bom():
             "标签": "action",
             "一句话描述": "Desc",
             "推荐度": "3",
-            "推荐标签": "推荐",
             "判断理由": "Reason",
             "链接": "https://www.gamer520.com/1.html",
             "用户备注": "",
@@ -66,7 +65,6 @@ def test_field_order_preserved():
             "标签": "action",
             "一句话描述": "Desc",
             "推荐度": "3",
-            "推荐标签": "推荐",
             "判断理由": "Reason",
             "链接": "https://www.gamer520.com/1.html",
             "用户备注": "note",

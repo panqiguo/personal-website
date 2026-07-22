@@ -1,6 +1,6 @@
-帖子发布日期,平台,标题,标签,一句话描述,推荐度,推荐标签,判断理由,链接,用户备注
-2026-06-06,PC,Game Alpha,action；adventure,An action game.,3,推荐,Good game.,https://www.gamer520.com/100001.html,playing
-2026-06-05,Switch,Game Beta,rpg；story,A role-playing game.,4,推荐,Nice story.,https://www.gamer520.com/100002.html,finished
-2026-06-04,PC/Switch,Game Gamma,strategy；simulation,A strategy game.,2,不推荐,Too complex.,https://www.gamer520.com/100003.html,
-2026-06-03,PC,Game Delta,puzzle,Test entry.,5,推荐,Great puzzle.,https://www.gamer520.com/100004.html,
-2026-05-01,Switch,Game Epsilon,action,Old game.,1,非常不推荐,Outdated.,https://www.gamer520.com/100005.html,
+﻿帖子发布日期,平台,标题,标签,一句话描述,推荐度,判断理由,链接,用户备注
+2026-06-06,PC,Game Alpha,action；adventure,An action game.,3,Good game.,https://www.gamer520.com/100001.html,playing
+2026-06-05,Switch,Game Beta,rpg；story,A role-playing game.,4,Nice story.,https://www.gamer520.com/100002.html,finished
+2026-06-04,PC/Switch,Game Gamma,strategy；simulation,A strategy game.,2,Too complex.,https://www.gamer520.com/100003.html,
+2026-06-03,PC,Game Delta,puzzle,Test entry.,5,Great puzzle.,https://www.gamer520.com/100004.html,
+2026-05-01,Switch,Game Epsilon,action,Old game.,1,Outdated.,https://www.gamer520.com/100005.html,

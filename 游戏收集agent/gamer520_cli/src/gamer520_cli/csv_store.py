@@ -39,7 +39,7 @@ def write_csv(path: str | Path, rows: list[dict[str, str]]) -> None:
     )
     try:
         with tmp as f:
-            writer = csv.DictWriter(f, fieldnames=CSV_FIELDS)
+            writer = csv.DictWriter(f, fieldnames=CSV_FIELDS, lineterminator="\n")
             writer.writeheader()
             for row in rows:
                 writer.writerow(row)

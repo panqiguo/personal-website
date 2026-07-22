@@ -58,7 +58,6 @@ def test_latest_platform_includes_cross_platform_rows():
             "标签": "story",
             "一句话描述": "A cross-platform game.",
             "推荐度": "3",
-            "推荐标签": "可试",
             "判断理由": "Cross-platform fixture.",
             "链接": "https://www.gamer520.com/100006.html",
             "用户备注": "",
@@ -125,7 +124,6 @@ def test_validate_fails_invalid_date():
             "标签": "",
             "一句话描述": "",
             "推荐度": "3",
-            "推荐标签": "",
             "判断理由": "",
             "链接": "https://www.gamer520.com/100010.html",
             "用户备注": "",
@@ -149,7 +147,6 @@ def test_validate_fails_invalid_platform():
             "标签": "",
             "一句话描述": "",
             "推荐度": "3",
-            "推荐标签": "",
             "判断理由": "",
             "链接": "https://www.gamer520.com/100010.html",
             "用户备注": "",
@@ -173,7 +170,6 @@ def test_validate_fails_invalid_score():
             "标签": "",
             "一句话描述": "",
             "推荐度": "6",
-            "推荐标签": "",
             "判断理由": "",
             "链接": "https://www.gamer520.com/100010.html",
             "用户备注": "",
@@ -197,7 +193,6 @@ def test_validate_fails_duplicate_title():
             "标签": "",
             "一句话描述": "",
             "推荐度": "3",
-            "推荐标签": "",
             "判断理由": "",
             "链接": "https://www.gamer520.com/100001.html",
             "用户备注": "",
@@ -209,7 +204,6 @@ def test_validate_fails_duplicate_title():
             "标签": "",
             "一句话描述": "",
             "推荐度": "4",
-            "推荐标签": "",
             "判断理由": "",
             "链接": "https://www.gamer520.com/200001.html",
             "用户备注": "",
@@ -233,7 +227,6 @@ def test_validate_fails_duplicate_link():
             "标签": "",
             "一句话描述": "",
             "推荐度": "3",
-            "推荐标签": "",
             "判断理由": "",
             "链接": "https://www.gamer520.com/100001.html",
             "用户备注": "",
@@ -245,7 +238,6 @@ def test_validate_fails_duplicate_link():
             "标签": "",
             "一句话描述": "",
             "推荐度": "4",
-            "推荐标签": "",
             "判断理由": "",
             "链接": "https://www.gamer520.com/100001.html",
             "用户备注": "",
@@ -275,7 +267,6 @@ def test_sort_actual():
             "标签": "",
             "一句话描述": "",
             "推荐度": "3",
-            "推荐标签": "",
             "判断理由": "",
             "链接": f"https://www.gamer520.com/{link_id}.html",
             "用户备注": "",
@@ -307,7 +298,6 @@ def test_add_stdin():
         "标签": "action",
         "一句话描述": "A new game.",
         "推荐度": "4",
-        "推荐标签": "推荐",
         "判断理由": "Looks good.",
         "链接": "https://www.gamer520.com/200001.html",
         "用户备注": "",
@@ -322,10 +312,25 @@ def test_add_stdin():
 
 
 def test_add_dry_run():
+    payload = json.dumps(
+        [
+            {
+                "帖子发布日期": "2026-06-07",
+                "平台": "PC",
+                "标题": "Dry Run Game",
+                "标签": "action",
+                "一句话描述": "Dry run.",
+                "推荐度": "3",
+                "判断理由": "Test.",
+                "链接": "https://www.gamer520.com/200002.html",
+                "用户备注": "",
+            }
+        ]
+    )
     result = runner.invoke(
         app,
         ["add", "--stdin", "--csv", str(FIXTURE_CSV), "--dry-run"],
-        input=json.dumps([{"帖子发布日期": "2026-06-07", "平台": "PC", "标题": "Dry Run Game", "标签": "action", "一句话描述": "Dry run.", "推荐度": "3", "推荐标签": "可试", "判断理由": "Test.", "链接": "https://www.gamer520.com/200002.html", "用户备注": ""}]),
+        input=payload,
     )
     assert result.exit_code == 0
     assert "Would add" in result.stdout
@@ -340,7 +345,6 @@ def test_add_rejects_duplicate_link():
             "标签": "",
             "一句话描述": "",
             "推荐度": "3",
-            "推荐标签": "",
             "判断理由": "",
             "链接": "https://www.gamer520.com/100001.html",
             "用户备注": "",
@@ -354,7 +358,6 @@ def test_add_rejects_duplicate_link():
         "标签": "",
         "一句话描述": "",
         "推荐度": "4",
-        "推荐标签": "",
         "判断理由": "",
         "链接": "https://www.gamer520.com/100001.html",
         "用户备注": "",
@@ -377,7 +380,6 @@ def test_add_rejects_duplicate_title():
             "标签": "",
             "一句话描述": "",
             "推荐度": "3",
-            "推荐标签": "",
             "判断理由": "",
             "链接": "https://www.gamer520.com/100001.html",
             "用户备注": "",
@@ -391,7 +393,6 @@ def test_add_rejects_duplicate_title():
         "标签": "",
         "一句话描述": "",
         "推荐度": "4",
-        "推荐标签": "",
         "判断理由": "",
         "链接": "https://www.gamer520.com/200001.html",
         "用户备注": "",
@@ -405,31 +406,49 @@ def test_add_rejects_duplicate_title():
         os.unlink(path)
 
 
-def test_add_from_file():
+def test_add_has_no_file_input_option():
+    result = runner.invoke(app, ["add", "--help"])
+
+    assert result.exit_code == 0
+    assert "--file" not in result.stdout
+
+
+def test_add_builds_row_from_source_and_assessment():
     csv_path = _temp_copy(str(FIXTURE_CSV))
-    entry = {
-        "帖子发布日期": "2026-06-08",
-        "平台": "Switch",
-        "标题": "File Import Game",
-        "标签": "rpg",
-        "一句话描述": "From file.",
-        "推荐度": "5",
-        "推荐标签": "推荐",
-        "判断理由": "Good.",
-        "链接": "https://www.gamer520.com/300001.html",
-        "用户备注": "",
-    }
-    tmp = tempfile.NamedTemporaryFile(
-        mode="w", encoding="utf-8", suffix=".json", delete=False
+    payload = json.dumps(
+        [
+            {
+                "source": {
+                    "date": "2026-06-08",
+                    "platform": "PC",
+                    "title": "Structured Game",
+                    "url": "https://www.gamer520.com/300001.html",
+                },
+                "assessment": {
+                    "tags": ["叙事", "探索"],
+                    "description": "A structured entry.",
+                    "score": 4,
+                    "reason": "Matches the preferred experience.",
+                },
+            }
+        ],
+        ensure_ascii=False,
     )
-    json.dump([entry], tmp, ensure_ascii=False)
-    tmp.close()
     try:
-        result = runner.invoke(app, ["add", "--file", tmp.name, "--csv", csv_path])
+        result = runner.invoke(
+            app,
+            ["add", "--stdin", "--csv", csv_path],
+            input=payload,
+        )
+
         assert result.exit_code == 0, result.stderr
-        assert "Added 1 entries" in result.stdout
+        added = read_csv(csv_path)[-1]
+        assert added["帖子发布日期"] == "2026-06-08"
+        assert added["标题"] == "Structured Game"
+        assert added["标签"] == "叙事；探索"
+        assert added["推荐度"] == "4"
+        assert "推荐标签" not in added
     finally:
-        os.unlink(tmp.name)
         os.unlink(csv_path)
 
 
@@ -485,7 +504,6 @@ def test_remove_rejects_if_resulting_csv_invalid():
             "标签": "",
             "一句话描述": "",
             "推荐度": "3",
-            "推荐标签": "",
             "判断理由": "",
             "链接": "https://www.gamer520.com/100001.html",
             "用户备注": "",
@@ -497,7 +515,6 @@ def test_remove_rejects_if_resulting_csv_invalid():
             "标签": "",
             "一句话描述": "",
             "推荐度": "4",
-            "推荐标签": "",
             "判断理由": "",
             "链接": "https://www.gamer520.com/200001.html",
             "用户备注": "",
@@ -509,7 +526,6 @@ def test_remove_rejects_if_resulting_csv_invalid():
             "标签": "",
             "一句话描述": "",
             "推荐度": "4",
-            "推荐标签": "",
             "判断理由": "",
             "链接": "https://www.gamer520.com/300001.html",
             "用户备注": "",
@@ -564,20 +580,34 @@ def test_export_platform():
         assert obj["平台"] == "Switch"
 
 
-def test_doctor_check_repeat_ok():
-    result = runner.invoke(app, ["doctor-check-repeat", "--csv", str(FIXTURE_CSV)])
+def test_doctor_ok():
+    result = runner.invoke(
+        app,
+        ["doctor", "--similarity-threshold", "0.99", "--csv", str(FIXTURE_CSV)],
+    )
     assert result.exit_code == 0
-    assert "No duplicate links or titles found" in result.stdout
+    assert "Database is healthy" in result.stdout
 
-    result_json = runner.invoke(app, ["doctor-check-repeat", "--csv", str(FIXTURE_CSV), "--json"])
+    result_json = runner.invoke(
+        app,
+        [
+            "doctor",
+            "--similarity-threshold",
+            "0.99",
+            "--csv",
+            str(FIXTURE_CSV),
+            "--json",
+        ],
+    )
     assert result_json.exit_code == 0
     data = json.loads(result_json.stdout)
-    assert data["has_repeats"] is False
+    assert data["valid"] is True
+    assert data["review_required"] is False
     assert len(data["link_repeats"]) == 0
     assert len(data["title_repeats"]) == 0
 
 
-def test_doctor_check_repeat_duplicate_link():
+def test_doctor_duplicate_link():
     rows = [
         {
             "帖子发布日期": "2026-06-01",
@@ -586,7 +616,6 @@ def test_doctor_check_repeat_duplicate_link():
             "标签": "",
             "一句话描述": "",
             "推荐度": "3",
-            "推荐标签": "",
             "判断理由": "",
             "链接": "https://www.gamer520.com/100010.html",
             "用户备注": "",
@@ -598,7 +627,6 @@ def test_doctor_check_repeat_duplicate_link():
             "标签": "",
             "一句话描述": "",
             "推荐度": "3",
-            "推荐标签": "",
             "判断理由": "",
             "链接": "https://www.gamer520.com/100010.html",
             "用户备注": "",
@@ -606,15 +634,15 @@ def test_doctor_check_repeat_duplicate_link():
     ]
     path = _test_csv(rows)
     try:
-        result = runner.invoke(app, ["doctor-check-repeat", "--csv", path])
+        result = runner.invoke(app, ["doctor", "--csv", path])
         assert result.exit_code == 1
         assert "Found 1 duplicate link group" in result.stdout
         assert "https://www.gamer520.com/100010.html" in result.stdout
 
-        result_json = runner.invoke(app, ["doctor-check-repeat", "--csv", path, "--json"])
+        result_json = runner.invoke(app, ["doctor", "--csv", path, "--json"])
         assert result_json.exit_code == 1
         data = json.loads(result_json.stdout)
-        assert data["has_repeats"] is True
+        assert data["valid"] is False
         assert len(data["link_repeats"]) == 1
         assert data["link_repeats"][0]["normalized_url"] == "https://www.gamer520.com/100010.html"
         assert len(data["link_repeats"][0]["items"]) == 2
@@ -622,7 +650,7 @@ def test_doctor_check_repeat_duplicate_link():
         os.unlink(path)
 
 
-def test_doctor_check_repeat_duplicate_title():
+def test_doctor_duplicate_title():
     rows = [
         {
             "帖子发布日期": "2026-06-01",
@@ -631,7 +659,6 @@ def test_doctor_check_repeat_duplicate_title():
             "标签": "",
             "一句话描述": "",
             "推荐度": "3",
-            "推荐标签": "",
             "判断理由": "",
             "链接": "https://www.gamer520.com/100010.html",
             "用户备注": "",
@@ -643,7 +670,6 @@ def test_doctor_check_repeat_duplicate_title():
             "标签": "",
             "一句话描述": "",
             "推荐度": "3",
-            "推荐标签": "",
             "判断理由": "",
             "链接": "https://www.gamer520.com/100020.html",
             "用户备注": "",
@@ -651,17 +677,54 @@ def test_doctor_check_repeat_duplicate_title():
     ]
     path = _test_csv(rows)
     try:
-        result = runner.invoke(app, ["doctor-check-repeat", "--csv", path])
+        result = runner.invoke(app, ["doctor", "--csv", path])
         assert result.exit_code == 1
         assert "Found 1 duplicate title group" in result.stdout
         assert "cozygrove" in result.stdout
 
-        result_json = runner.invoke(app, ["doctor-check-repeat", "--csv", path, "--json"])
+        result_json = runner.invoke(app, ["doctor", "--csv", path, "--json"])
         assert result_json.exit_code == 1
         data = json.loads(result_json.stdout)
-        assert data["has_repeats"] is True
+        assert data["valid"] is False
         assert len(data["title_repeats"]) == 1
         assert data["title_repeats"][0]["normalized_title"] == "cozygrove"
         assert len(data["title_repeats"][0]["items"]) == 2
+    finally:
+        os.unlink(path)
+
+
+def test_doctor_reports_similar_titles_without_failing_validation():
+    rows = [
+        {
+            "帖子发布日期": "2026-07-10",
+            "平台": "PC",
+            "标题": "数码宝贝物语 时空异客 Digimon Story Time Stranger",
+            "标签": "",
+            "一句话描述": "",
+            "推荐度": "3",
+            "判断理由": "",
+            "链接": "https://www.gamer520.com/100431.html",
+            "用户备注": "",
+        },
+        {
+            "帖子发布日期": "2026-07-09",
+            "平台": "Switch",
+            "标题": "数码宝贝物语 时空异客",
+            "标签": "",
+            "一句话描述": "",
+            "推荐度": "2",
+            "判断理由": "",
+            "链接": "https://www.gamer520.com/117629.html",
+            "用户备注": "",
+        },
+    ]
+    path = _test_csv(rows)
+    try:
+        result = runner.invoke(app, ["doctor", "--csv", path, "--json"])
+        assert result.exit_code == 0
+        data = json.loads(result.stdout)
+        assert data["valid"] is True
+        assert data["review_required"] is True
+        assert len(data["similar_title_candidates"]) == 1
     finally:
         os.unlink(path)
